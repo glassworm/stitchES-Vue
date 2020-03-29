@@ -3,8 +3,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 import Log from '../../js/log.js'
 
 const blankMP3 =
@@ -31,10 +29,6 @@ export default {
     preloadSrc: String
   },
   computed: {
-    ...mapGetters([
-      'audioNodes'
-    ]),
-
     blank () {
       return this.src === blankMP3
     },
@@ -68,7 +62,6 @@ export default {
     this.src = this.preloadSrc || blankMP3
     this.isLoaded = false
     this.isLoading = Boolean(this.preloadSrc)
-    this.audioNodes(this.playlistId).push(this)
   },
   methods: {
     load () {
@@ -94,7 +87,9 @@ export default {
     },
 
     async play (whilePlayingCallback) {
+      console.log('ttrying to play audioNode...')
       while (this.unlocked === false) {
+        console.log('we are locked!')
         // Waiting for audio element to be unlocked, because we decided to not
         // go further with playing it until it's available.
         // This is done by leveraging the non-blocking nature of Promises.

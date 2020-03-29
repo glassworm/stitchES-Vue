@@ -9,6 +9,7 @@ export default new Vuex.Store({
     playlist: {}
   },
   actions: {
+    /**
     addAudioNode: async (context, details) => {
       return new Promise((resolve, reject) => {
         context.commit('ADD_AUDIO_NODE', details)
@@ -21,14 +22,17 @@ export default new Vuex.Store({
         resolve()
       })
     }
+    **/
   },
   mutations: {
+    /**
     ADD_AUDIO_NODE: (state, details) => {
       state.playlist[details.playlistId].audioNodes.push(details.node)
     },
     REMOVE_AUDIO_NODE: (state, playlistId) => {
       state.playlist[playlistId].audioNodes.splice(0, 1)
     },
+    **/
     ADD_PLAYLIST: (state, playlistId) => {
       state.playlist[playlistId] = {
         audioNodes: [],
@@ -41,17 +45,16 @@ export default new Vuex.Store({
     },
     SET_NODE_POOL: (state, details) => {
       state.playlist[details.playlistId].nodePool = details.pool
-    },
-    UNLOCK_AUDIO: (state) => {
-      state.globalLock = false
     }
   },
   getters: {
+    /**
     audioNodes: state => {
       return function (playlistId) {
         return state.playlist[playlistId].audioNodes
       }
     },
+    **/
     globalLock: state => {
       return state.globalLock
     },

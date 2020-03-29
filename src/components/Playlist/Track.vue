@@ -68,6 +68,7 @@ export default {
     },
 
     cleanupAudioNode () {
+      console.log('CLEANUP CALLBACK.')
       this.audioNode = null
     },
 
@@ -104,6 +105,7 @@ export default {
       Log.trigger('track:play')
       try {
         if (this.audioNode) {
+          console.log('have an audio node')
           // No need to check for unlocked audio nodes, since hasEnded means the audio node have been unlocked before
           if (this.hasEnded) {
             this.seek(0)
@@ -171,6 +173,7 @@ export default {
     whilePlayingLocal (data) {
       this.position = data.currentTime / this.audioNode.duration
       this.timeFromEnd = this.audioNode.duration - data.currentTime
+      console.log('audioNode.duration %s', this.audioNode.duration)
       if (!this.hasEnded && this.timeFromEnd < 0.2) {
         this.hasEnded = true
         this.paused = true

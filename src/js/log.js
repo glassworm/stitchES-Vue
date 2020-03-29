@@ -1,8 +1,11 @@
+const DEBUG = true
 export default class Log {
   static trigger (scope, detail) {
     const message = `${performance.now().toFixed(1)} ms: ${scope}`
     /* eslint-disable no-console */
-    console.log(message)
+    if (DEBUG) {
+      console.log(message)
+    }
     /* eslint-disable */
     if (detail && detail.vue) {
       detail.vue.$root.$emit(scope, detail)

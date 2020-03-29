@@ -4,6 +4,7 @@
     :key="s"
     :lock="true"
     :playlistId="playlistId"
+    ref="audioNodes"
     v-for="s in size"
   />
 </div>
@@ -11,7 +12,7 @@
 
 <script>
 import Vue from 'vue'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 import AudioNode from './AudioNode.vue'
 import Log from '../../js/log.js'
@@ -22,10 +23,6 @@ import Log from '../../js/log.js'
 // Unlock a few elements, inspired by https://github.com/goldfire/howler.js/pull/1008/files
 export default {
   name: 'StitchES-Vue-NodePool',
-  data () {
-    return {
-    }
-  },
   components: {
     AudioNode
   },
@@ -35,12 +32,22 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'globalLock',
       'nextNode'
     ])
   },
   mounted () {
     Log.trigger('nodepool:create')
     this.setNodePool()
+    if (this.globalLock) {
+      document.addEventListener('click', () => this.unlockAllAudioNodes(true), {
+        once: true,
+        capture: false
+      })
+    }
+    this.$refs.audioNodes.forEach(audioNode => {
+      audioNode.cleanupCallback = () => {}
+    })
   },
   methods: {
     makePreloadingNode (src, cleanupCallback) {
@@ -61,11 +68,6 @@ export default {
       // so the data that has been preloaded has value for longer
       return preloader
     },
-
-    ...mapActions([
-      'addAudioNode',
-      'removeAudioNode'
-    ]),
 
     ...mapMutations([
       'SET_NODE_POOL'
@@ -100,7 +102,15 @@ export default {
         playlistId: this.playlistId,
         pool: this
       })
+    },
+
+    unlockAllAudioNodes (delayPreloadingNodeUnlock = false) {
+      Log.trigger('nodePool:unlockall')
+      for (const audioNode of this.$refs.audioNodes) {
+        audioNode.unlock(delayPreloadingNodeUnlock)
+      }
     }
+
   }
 }
 </script>

@@ -23,7 +23,6 @@ import { mapGetters, mapMutations } from 'vuex'
 
 import NodePool from './NodePool.vue'
 import Track from './Track.vue'
-import Log from '../../js/log.js'
 
 export default {
   name: 'StitchES-Vue',
@@ -48,8 +47,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'audioNodes',
-      'globalLock',
       'tracks'
     ])
   },
@@ -59,16 +56,8 @@ export default {
   },
   mounted () {
     if (this.preloadIndex >= 0) this.tracks(this.id)[this.preloadIndex].preload()
-    // this.$root.$on('track-ended', (trackId) => this.playNextTrack(trackId))
-    // this.$root.$on('track-preloadNextTrack', (trackId) => this.preloadNextTrack(trackId))
     this.$root.$on('track-ended', (detail) => this.playNextTrack(detail.id))
     this.$root.$on('track-preloadNextTrack', (detail) => this.preloadNextTrack(detail.id))
-    if (this.globalLock) {
-      document.addEventListener('click', () => this.unlockAllAudioNodes(true), {
-        once: true,
-        capture: false
-      })
-    }
   },
   methods: {
     addPlaylist () {
@@ -76,8 +65,7 @@ export default {
     },
 
     ...mapMutations([
-      'ADD_PLAYLIST',
-      'UNLOCK_AUDIO'
+      'ADD_PLAYLIST'
     ]),
 
     nextTrack () {
@@ -122,17 +110,6 @@ export default {
       return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
       )
-    },
-
-    unlockAllAudioNodes (delayPreloadingNodeUnlock = false) {
-      Log.trigger('nonePool:unlockall')
-      for (const audioNode of this.audioNodes(this.id)) {
-        audioNode.unlock(delayPreloadingNodeUnlock)
-      }
-    },
-
-    unlockAudio () {
-      this.UNLOCK_AUDIO()
     }
   }
 }
