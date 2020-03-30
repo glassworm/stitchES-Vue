@@ -81,6 +81,7 @@ export default {
 
     // has Last in Last out behaviour e.g. [a, b, c] -> [b, c, a]
     async nextAvailableNode (cleanupCallback) {
+      // console.log('nextAvailableNode was called.')
       const audioNode = this.audioNodes.shift()
 
       // run the cleanup callback to cleanup the previous track

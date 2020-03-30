@@ -88,7 +88,6 @@ export default {
 
     async play (whilePlayingCallback) {
       while (this.unlocked === false) {
-        console.log('we are locked!')
         // Waiting for audio element to be unlocked, because we decided to not
         // go further with playing it until it's available.
         // This is done by leveraging the non-blocking nature of Promises.

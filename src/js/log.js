@@ -1,4 +1,4 @@
-const DEBUG = true
+const DEBUG = false
 export default class Log {
   static trigger (scope, detail) {
     const message = `${performance.now().toFixed(1)} ms: ${scope}`

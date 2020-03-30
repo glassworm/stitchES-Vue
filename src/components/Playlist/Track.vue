@@ -68,7 +68,6 @@ export default {
     },
 
     cleanupAudioNode () {
-      console.log('CLEANUP CALLBACK.')
       this.audioNode = null
     },
 
@@ -105,7 +104,6 @@ export default {
       Log.trigger('track:play')
       try {
         if (this.audioNode) {
-          console.log('have an audio node')
           // No need to check for unlocked audio nodes, since hasEnded means the audio node have been unlocked before
           if (this.hasEnded) {
             this.seek(0)
