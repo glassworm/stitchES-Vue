@@ -175,14 +175,10 @@ export default {
       if (!this.hasEnded && this.timeFromEnd < 0.2) {
         this.hasEnded = true
         this.paused = true
-        // this.$root.$emit('track-ended', this.id)
-        // Log.trigger('track:ended', { fileName: this.url, id: this.id })
         Log.trigger('track-ended', { fileName: this.url, id: this.id, vue: this })
       }
       if (!this.preloadNextTrackDispatched && this.timeFromEnd < 10) {
         this.preloadNextTrackDispatched = true
-        // this.$root.$emit('track-preloadNextTrack', this.id)
-        // Log.trigger('track:preloadNextTrack', { id: this.id })
         Log.trigger('track-preloadNextTrack', { id: this.id, vue: this })
       }
 
