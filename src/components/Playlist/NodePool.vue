@@ -25,7 +25,7 @@ export default {
   name: 'StitchES-Vue-NodePool',
   data () {
     return {
-      audioNodes: []
+      // audioNodes: []
     }
   },
   components: {
@@ -50,8 +50,8 @@ export default {
         capture: false
       })
     }
-    this.audioNodes = this.$refs.audioNodes
-    this.audioNodes.forEach(audioNode => {
+    // this.audioNodes = this.$refs.audioNodes
+    this.$refs.audioNodes.forEach(audioNode => {
       audioNode.cleanupCallback = () => {}
     })
   },
@@ -69,7 +69,7 @@ export default {
       })
       preloader.cleanupCallback = cleanupCallback
       preloader.$mount()
-      this.audioNodes.push(preloader)
+      this.$refs.audioNodes.push(preloader)
       // When we grab nodes we want to grab the preloaded one last
       // so the data that has been preloaded has value for longer
       return preloader
@@ -82,7 +82,7 @@ export default {
     // has Last in Last out behaviour e.g. [a, b, c] -> [b, c, a]
     async nextAvailableNode (cleanupCallback) {
       // console.log('nextAvailableNode was called.')
-      const audioNode = this.audioNodes.shift()
+      const audioNode = this.$refs.audioNodes.shift()
 
       // run the cleanup callback to cleanup the previous track
       audioNode.cleanupCallback()
@@ -90,7 +90,7 @@ export default {
       // attach the cleanup callback for the new track
       audioNode.cleanupCallback = cleanupCallback
 
-      this.audioNodes.push(audioNode)
+      this.$refs.audioNodes.push(audioNode)
 
       // if the node is not unlocked (edge case) then unlock it
       // this happens if someone clicks play before interacting with document
@@ -112,7 +112,7 @@ export default {
 
     unlockAllAudioNodes (delayPreloadingNodeUnlock = false) {
       Log.trigger('nodePool:unlockall')
-      for (const audioNode of this.audioNodes) {
+      for (const audioNode of this.$refs.audioNodes) {
         audioNode.unlock(delayPreloadingNodeUnlock)
       }
     }

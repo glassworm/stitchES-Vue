@@ -12,7 +12,6 @@ export default {
   name: 'StitchES-Vue-AudioNode',
   data () {
     return {
-      audio: null,
       fileName: null,
       isLoaded: false,
       isLoading: Boolean(this.preloadSrc),
@@ -34,17 +33,17 @@ export default {
     },
 
     duration () {
-      return this.audio.duration
+      return this.$el.duration
     },
 
     src: {
       get () {
-        return this.audio.src
+        return this.$el.src
       },
       set (url) {
         this.isLoaded = false
         this.isLoading = false
-        this.audio.src = url
+        this.$el.src = url
         this.fileName = url.startsWith('data:audio') ? 'data' : url.split('/').pop()
         Log.trigger('audioNode:srcchanged', { fileName: this.fileName })
       }
@@ -52,20 +51,19 @@ export default {
   },
   mounted () {
     Log.trigger('audioNode:create')
-    this.audio = this.$el
-    this.audio.autoplay = false
-    this.audio.onprogress = this.whileLoading
-    this.audio.ontimeupdate = this.whilePlaying
-    this.audio.oncanplaythrough = this.loaded
-    this.audio.onloadeddata = this.onloading
-    this.audio.preload = this.preloadSrc ? 'auto' : 'none'
+    this.$el.autoplay = false
+    this.$el.onprogress = this.whileLoading
+    this.$el.ontimeupdate = this.whilePlaying
+    this.$el.oncanplaythrough = this.loaded
+    this.$el.onloadeddata = this.onloading
+    this.$el.preload = this.preloadSrc ? 'auto' : 'none'
     this.src = this.preloadSrc || blankMP3
     this.isLoaded = false
     this.isLoading = Boolean(this.preloadSrc)
   },
   methods: {
     load () {
-      this.audio.load()
+      this.$el.load()
     },
 
     loaded () {
@@ -83,7 +81,7 @@ export default {
     },
 
     pause () {
-      this.audio.pause()
+      this.$el.pause()
     },
 
     async play (whilePlayingCallback) {
@@ -96,16 +94,16 @@ export default {
       }
       // ideally this only fires on real playback, not when we are unlocking
       this.whilePlayingCallback = whilePlayingCallback
-      return this.audio.play()
+      return this.$el.play()
     },
 
     ready () {
-      return this.audio.readyState >= 3
+      return this.$el.readyState >= 3
     },
 
     seek (position) {
       Log.trigger('audioNode:seek')
-      this.audio.currentTime = this.audio.duration * position
+      this.$el.currentTime = this.$el.duration * position
     },
 
     // this can *only* be called via an interaction event like a click/touch
@@ -119,13 +117,13 @@ export default {
           // is called twice, once from the play interaction and once from general unlockAll()
           const preloadSrc = this.src
           this.src = blankMP3
-          await this.audio.play()
-          this.audio.pause()
+          await this.$el.play()
+          this.$el.pause()
           this.unlocked = true
           this.src = preloadSrc
           Log.trigger('audioNode:unlockedpreloaded')
         } else if (!this.unlocked) {
-          await this.audio.play()
+          await this.$el.play()
           Log.trigger('audioNode:unlocked')
           this.unlocked = true
         } else {
@@ -138,23 +136,23 @@ export default {
 
     // https://dev.w3.org/html5/spec-author-view/spec.html#mediaerror
     whileLoading () {
-      if (this.audio.b) {
-        Log.trigger(`audioNode:whileLoading: ${this.audio.buffered.end(0)}`)
+      if (this.$el.b) {
+        Log.trigger(`audioNode:whileLoading: ${this.$el.buffered.end(0)}`)
       }
     },
 
     whilePlaying () {
       // Updating the src seems to fire ontimeupdate and we ignore it to avoid
       // triggering the event for tracks that actually aren't playing
-      if (this.audio.currentTime === 0) return
+      if (this.$el.currentTime === 0) return
 
       if (this.whilePlayingCallback) {
         Log.trigger('audioNode:whilePlaying', {
-          currentTime: this.audio.currentTime,
+          currentTime: this.$el.currentTime,
           fileName: this.fileName
         })
         this.whilePlayingCallback({
-          currentTime: this.audio.currentTime,
+          currentTime: this.$el.currentTime,
           fileName: this.fileName
         })
       }
