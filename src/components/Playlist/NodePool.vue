@@ -59,7 +59,6 @@ export default {
     makePreloadingNode (src, cleanupCallback) {
       const AudioNodeClass = Vue.extend(AudioNode)
       const preloader = new AudioNodeClass({
-        // el: this.$el.querySelector('.audio-node'),
         parent: this,
         propsData: {
           lock: true,

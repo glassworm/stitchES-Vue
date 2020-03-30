@@ -87,7 +87,6 @@ export default {
     },
 
     async play (whilePlayingCallback) {
-      console.log('ttrying to play audioNode...')
       while (this.unlocked === false) {
         console.log('we are locked!')
         // Waiting for audio element to be unlocked, because we decided to not
@@ -113,7 +112,6 @@ export default {
     // this can *only* be called via an interaction event like a click/touch
     // eslint-disable-next-line
     async unlock (delayPreloadingNodeUnlock) {
-      console.log('trying to unlock!!!!!!')
       // https://developers.google.com/web/updates/2016/03/play-returns-promise
       try {
         // if we've preloaded another src, switch src to unlock w/ blank
