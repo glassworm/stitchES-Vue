@@ -14,9 +14,7 @@ export default new Vuex.Store({
   },
   getters: {
     nodePools: state => {
-      return function (playlistId) {
-        return state.nodePools[playlistId]
-      }
+      return state.nodePools
     }
   }
 })
