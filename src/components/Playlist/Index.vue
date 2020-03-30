@@ -10,6 +10,7 @@
       :key="index"
       :playlistId="id"
       :setCurrentTrack="setCurrentTrack"
+      :tracks="tracks"
       :url="t"
       v-for="(t, index) in trackList"
       :whilePlaying="whilePlaying"
@@ -19,8 +20,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
-
 import NodePool from './NodePool.vue'
 import Track from './Track.vue'
 
@@ -31,6 +30,7 @@ export default {
       currentTrack: null,
       id: null,
       preloadIndex: 0,
+      tracks: [],
       // eslint-disable-next-line
       whilePlaying: data => {
         // console.log(data)
@@ -45,35 +45,21 @@ export default {
     nodePoolSize: Number,
     trackList: Array
   },
-  computed: {
-    ...mapGetters([
-      'tracks'
-    ])
-  },
   created () {
     this.id = this.uuidv4()
-    this.addPlaylist(this.id)
   },
   mounted () {
-    if (this.preloadIndex >= 0) this.tracks(this.id)[this.preloadIndex].preload()
+    if (this.preloadIndex >= 0) this.tracks[this.preloadIndex].preload()
     this.$root.$on('track-ended', (detail) => this.playNextTrack(detail.id))
     this.$root.$on('track-preloadNextTrack', (detail) => this.preloadNextTrack(detail.id))
   },
   methods: {
-    addPlaylist () {
-      this.ADD_PLAYLIST(this.id)
-    },
-
-    ...mapMutations([
-      'ADD_PLAYLIST'
-    ]),
-
     nextTrack () {
-      const currentTrackIndex = this.tracks(this.id).findIndex(
+      const currentTrackIndex = this.tracks.findIndex(
         track => this.currentTrack && track.id === this.currentTrack.id
       )
-      return this.tracks(this.id)[currentTrackIndex + 1]
-        ? this.tracks(this.id)[currentTrackIndex + 1]
+      return this.tracks[currentTrackIndex + 1]
+        ? this.tracks[currentTrackIndex + 1]
         : undefined
     },
 
@@ -103,7 +89,7 @@ export default {
     },
 
     trackIsPartOfPlaylist (trackId) {
-      return this.tracks(this.id).some(track => track.id === trackId)
+      return this.tracks.some(track => track.id === trackId)
     },
 
     uuidv4 () {

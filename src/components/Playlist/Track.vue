@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
 
 import Log from '../../js/log.js'
 
@@ -47,33 +47,27 @@ export default {
     id: String,
     playlistId: String,
     setCurrentTrack: Function,
+    tracks: Array,
     url: String,
     whilePlaying: Function
   },
   computed: {
     ...mapGetters([
-      'nodePool'
+      'nodePools'
     ])
   },
   mounted () {
-    this.addTrack()
+    this.tracks.push(this)
     Log.trigger('track:create')
   },
   methods: {
-    addTrack () {
-      this.ADD_TRACK({
-        playlistId: this.playlistId,
-        track: this
-      })
-    },
-
     cleanupAudioNode () {
       this.audioNode = null
     },
 
     async grabNode () {
       Log.trigger('track:grabNodeAndSetSrc')
-      this.audioNode = await this.nodePool(this.playlistId).nextAvailableNode(
+      this.audioNode = await this.nodePools[this.playlistId].nextAvailableNode(
         this.cleanupAudioNode
       )
     },
@@ -87,10 +81,6 @@ export default {
         await this.audioNode.load()
       }
     },
-
-    ...mapMutations([
-      'ADD_TRACK'
-    ]),
 
     pause () {
       this.audioNode.pause()
@@ -137,7 +127,7 @@ export default {
       // grab node from list
       // make sure this one is last to be unlocked
       Log.trigger('track:preload')
-      this.audioNode = this.nodePool(this.playlistId).makePreloadingNode(
+      this.audioNode = this.nodePools[this.playlistId].makePreloadingNode(
         this.url,
         this.cleanupAudioNode
       )

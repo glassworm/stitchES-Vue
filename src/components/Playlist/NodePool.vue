@@ -3,7 +3,6 @@
   <AudioNode
     :key="s"
     :lock="true"
-    :playlistId="playlistId"
     ref="audioNodes"
     v-for="s in size"
   />
@@ -32,28 +31,28 @@ export default {
     AudioNode
   },
   props: {
+    globalLock: Boolean,
     playlistId: String,
     size: Number
   },
   computed: {
     ...mapGetters([
-      'globalLock',
       'nextNode'
     ])
   },
   mounted () {
     Log.trigger('nodepool:create')
-    this.setNodePool()
+    this.addNodePool()
     if (this.globalLock) {
       document.addEventListener('click', () => this.unlockAllAudioNodes(true), {
         once: true,
         capture: false
       })
     }
-    // this.audioNodes = this.$refs.audioNodes
     this.$refs.audioNodes.forEach(audioNode => {
       audioNode.cleanupCallback = () => {}
     })
+    this.addNodePool()
   },
   methods: {
     makePreloadingNode (src, cleanupCallback) {
@@ -76,7 +75,7 @@ export default {
     },
 
     ...mapMutations([
-      'SET_NODE_POOL'
+      'ADD_NODE_POOL'
     ]),
 
     // has Last in Last out behaviour e.g. [a, b, c] -> [b, c, a]
@@ -103,8 +102,8 @@ export default {
       return audioNode
     },
 
-    setNodePool () {
-      this.SET_NODE_POOL({
+    addNodePool () {
+      this.ADD_NODE_POOL({
         playlistId: this.playlistId,
         pool: this
       })

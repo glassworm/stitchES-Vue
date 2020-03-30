@@ -24,7 +24,6 @@ export default {
   },
   props: {
     lock: Boolean,
-    playlistId: String,
     preloadSrc: String
   },
   computed: {
