@@ -159,9 +159,8 @@ export default {
     },
 
     whilePlayingLocal (data) {
-      this.position = data.currentTime / this.audioNode.duration
-      this.timeFromEnd = this.audioNode.duration - data.currentTime
-      console.log('audioNode.duration %s', this.audioNode.duration)
+      this.position = data.currentTime / this.audioNode.$el.duration
+      this.timeFromEnd = this.audioNode.$el.duration - data.currentTime
       if (!this.hasEnded && this.timeFromEnd < 0.2) {
         this.hasEnded = true
         this.paused = true

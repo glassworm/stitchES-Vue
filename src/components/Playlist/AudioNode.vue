@@ -31,10 +31,6 @@ export default {
       return this.src === blankMP3
     },
 
-    duration () {
-      return this.$el.duration
-    },
-
     src: {
       get () {
         return this.$el.src

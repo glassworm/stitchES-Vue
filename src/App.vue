@@ -13,6 +13,11 @@
         '/mp3/test3.mp3',
         '/mp3/test4.mp3',
         '/mp3/test5.mp3',
+        '/mp3/test6.mp3',
+        '/mp3/test7.mp3',
+        '/mp3/test8.mp3',
+        '/mp3/test9.mp3',
+        '/mp3/test10.mp3'
       ]"
       :nodePoolSize="nodePoolSize"
     />
