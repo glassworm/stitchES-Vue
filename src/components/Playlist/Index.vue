@@ -1,6 +1,7 @@
 <template>
 <div>
   <NodePool
+    :globalLock="globalLock"
     :playlistId="id"
     :size="nodePoolSize"
   />
@@ -28,6 +29,7 @@ export default {
   data () {
     return {
       currentTrack: null,
+      globalLock: true,
       id: null,
       preloadIndex: 0,
       tracks: [],
