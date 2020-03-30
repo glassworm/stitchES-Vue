@@ -77,7 +77,7 @@ export default {
         this.currentTrack = nextTrack
       } else {
         await this.firstTrack().play()
-        this.currentTrack = this.firstTrack
+        this.currentTrack = this.firstTrack()
       }
     },
 

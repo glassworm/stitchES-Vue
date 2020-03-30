@@ -8,10 +8,11 @@
     <h2>Playlist of 4 different tracks</h2>
     <Playlist
       :trackList="[
-        '/mp3/short-continuous-1.mp3',
-        '/mp3/short-continuous-2.mp3',
-        '/mp3/short-continuous-3.mp3',
-        '/mp3/short-continuous-4.mp3'
+        '/mp3/test1.mp3',
+        '/mp3/test2.mp3',
+        '/mp3/test3.mp3',
+        '/mp3/test4.mp3',
+        '/mp3/test5.mp3'
       ]"
       :nodePoolSize="nodePoolSize"
     />
