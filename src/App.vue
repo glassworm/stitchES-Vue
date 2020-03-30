@@ -13,20 +13,6 @@
         '/mp3/test3.mp3',
         '/mp3/test4.mp3',
         '/mp3/test5.mp3',
-        '/mp3/test6.mp3',
-        '/mp3/test7.mp3',
-        '/mp3/test8.mp3',
-        '/mp3/test9.mp3',
-        '/mp3/test10.mp3'
-      ]"
-      :nodePoolSize="nodePoolSize"
-    />
-
-    <h2>Playlist with duplicate tracks</h2>
-    <Playlist
-      :trackList="[
-        '/mp3/short-continuous-1.mp3',
-        '/mp3/short-continuous-1.mp3'
       ]"
       :nodePoolSize="nodePoolSize"
     />

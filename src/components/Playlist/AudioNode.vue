@@ -113,6 +113,7 @@ export default {
     // this can *only* be called via an interaction event like a click/touch
     // eslint-disable-next-line
     async unlock (delayPreloadingNodeUnlock) {
+      console.log('trying to unlock!!!!!!')
       // https://developers.google.com/web/updates/2016/03/play-returns-promise
       try {
         // if we've preloaded another src, switch src to unlock w/ blank
