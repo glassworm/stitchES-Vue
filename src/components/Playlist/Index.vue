@@ -56,6 +56,10 @@ export default {
     this.$root.$on('track-preloadNextTrack', (detail) => this.preloadNextTrack(detail.id))
   },
   methods: {
+    firstTrack () {
+      return this.tracks[0]
+    },
+
     nextTrack () {
       const currentTrackIndex = this.tracks.findIndex(
         track => this.currentTrack && track.id === this.currentTrack.id
@@ -71,6 +75,9 @@ export default {
       if (nextTrack) {
         await nextTrack.play()
         this.currentTrack = nextTrack
+      } else {
+        await this.firstTrack().play()
+        this.currentTrack = this.firstTrack
       }
     },
 
